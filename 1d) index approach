@@ -1,16 +1,73 @@
+% %Assignment 4 Fernanda Akegawa Monteiro 100955052
+% %-----------------------------------Question 1-----------------------------
+% %--------------------part a)-------------------------
+% %Transfer function = H (s)
+% %Vout=((Zc/(Zc+Zr))*Vin
+% %Zc=1/Cs
+% %Zr=R
+% %Vout/Vin=((1/Cs)/((1/Cs)+R))=H(s)
+% %H(s)=1/(1+RCs)
+% %s=jw
+% %H(jw)=1/(1+RCjw)
+% %|H(jw)|=1/sqrt(1+(RCw)^2) ------> Low pass filter
+% 
+w=linspace(0,360,36);
+Zc=1./((10e-6)*w*1i);
+Zr=20;
+Vin=1;
+Vout=((Zc/(Zc+Zr)))*Vin;
+%--------------------part b)-------------------------
+%3dtb-> |H(jw)|^2=1/2
+%|H(jw)|^2=1/(1+(RCw)^2)=1/2
+%1+(RCw)^2=2
+%(RCw)^2=1
+%w=1/(RC)
+R=20;
+C=10e-6;
+w=1/(R*C);   %w=5000
+f=1/(2*pi*R*C); %f=795.77
+%dw=linspace(0,2000,1000);
+df=linspace(0,1100,1000);
+H=1./(1+((R*C*2*pi*df).^2)); %not writing the |  |^2 for ploting
+loglog(df,H)
+
+%--------------------part c)------------------------
+%H=1/(1+2e-4*s)=Vout/Vin
+%Vin=Vout+Vout*2e-4*S
+%Vin(t)=Vout(t)+2e-4*(dVout/dt)
+%dVout/dt=(Vin(t)-Vout(t))/(2e-4)
+%--------------------part d)------------------------
 %indexing approaxing
-for c=0:2     %alalytical approach
+for c=0:2     
     dt=0.0002*10^(-c);
-    sz=round(0.002/dt)+1;
+    sz=round(0.0002/dt)+1;
     V=zeros(1,sz);
     T=zeros(1,sz);
     R=20;
     C=10e-6;
     V(1)=0;
     T(1)=0;
-    for i=1:0.002/dt     %few data points (?)
+    for i=1:0.0002/dt     %alalytical approach ploting
         V(i+1)=(1+R*C*V(i)/dt)/(1+R*C/dt);
         T(i+1)=i*dt;
     end
     plot (T,V)
 end
+VV=(1+R*C/dt)/(1+R*C/dt)  %alalytical approach number
+%--------------------part e)------------------------
+VVV=C*R/(C*R+dt)    %first order differencial approach 
+
+
+
+
+
+% %---------------------------------Question 2-------------------------------
+% %R value used was the same as Question 1
+% T=300;
+% B=w;
+% k=1.38e-23;
+% Vrms=sqrt(4*k*T*R*B)   %Vrms=4.0694e-8
+% %---------------------------------Question 3-------------------------------
+% 
+% Imax=Vin/(5*R);
+% current=normrnd(5,0.1) %guessing numbers here
